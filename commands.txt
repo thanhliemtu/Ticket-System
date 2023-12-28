@@ -1,0 +1,5 @@
+This is to monitor the source code:
+    cargo watch -q -c -w src/ -x run 
+
+This is to monitor the tests folder:
+    cargo watch -q -c -w tests/ -x "test -q quick_dev -- --nocapture"
