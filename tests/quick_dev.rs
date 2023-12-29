@@ -11,5 +11,7 @@ async fn quick_dev() -> Result<()> {
 
     hc.do_get("/hello2/Hansamu").await?.print().await?;
 
+    hc.do_post("/hello3", "Hello from POST request").await?.print().await?;
+
     Ok(())
 }

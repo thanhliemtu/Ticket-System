@@ -2,7 +2,7 @@
 
 use std::net::SocketAddr;
 
-use axum::{Router, response::{Html, IntoResponse}, routing::get, extract::{Query, Path}};
+use axum::{Router, response::{Html, IntoResponse}, routing::{get, post}, extract::{Query, Path}};
 use serde::Deserialize;
 
 #[tokio::main]
@@ -24,6 +24,7 @@ fn routes_hello() -> Router {
     Router::new()
     .route("/hello", get(handler_hello))
     .route("/hello2/:name", get(handler_hello2))
+    .route("/hello3", post(handler_hello3))
 }
 
 #[derive(Debug, Deserialize)]
@@ -47,4 +48,12 @@ async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
     Html(format!("Hello <strong>{name}!/strong>"))
 }
 
-// end region:  --- Handler Hello
+
+// post request handler, returns the body
+async fn handler_hello3(body: String) -> impl IntoResponse {
+    println!("->> {:<12} - handler_hello3 - {body:?}", "HANDLER");
+
+    body
+}
+
+// end region:  --- Routes Hello
