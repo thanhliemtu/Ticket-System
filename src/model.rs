@@ -35,7 +35,7 @@ impl ModelController {
 
 // CRUD implementation
 impl ModelController {
-    pub async fn create_ticker(&self, ticket_fc: TicketForCreate) -> Result<Ticket> {
+    pub async fn create_ticket(&self, ticket_fc: TicketForCreate) -> Result<Ticket> {
         let mut store = self.tickets_store.lock().unwrap();
 
         let id = store.len() as u64;

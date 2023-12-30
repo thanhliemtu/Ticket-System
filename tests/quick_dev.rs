@@ -49,7 +49,23 @@ async fn quick_dev() -> Result<()> {
     // Verify that the cookie has been set
     // after logging in
     // (uncomment the line below to verify)
-    hc.do_get("/hello2/Hansamu").await?.print().await?;
+    // hc.do_get("/hello2/Hansamu").await?.print().await?;
+
+    // Test creating a ticket
+    let req_create_ticket = hc.do_post(
+        "/api/tickets", 
+        json!({
+            "title": "Ticket AAA"
+        })
+    );
+    req_create_ticket.await?.print().await?;
+
+    // Test deleting a ticket
+    // (uncomment the line below to test)
+    // hc.do_delete("/api/tickets/2").await?.print().await?;
+
+    // Test printing out all the tickets
+    hc.do_get("/api/tickets").await?.print().await?;
 
     Ok(())
 }
