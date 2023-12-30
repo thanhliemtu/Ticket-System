@@ -7,11 +7,15 @@ use serde::Deserialize;
 use tower_http::services::ServeDir;
 
 mod error;
+mod web;
+
+pub use self::error::{Error, Result};
 
 #[tokio::main]
 async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
+        .merge(web::routes_login::routes())
         .fallback_service(routes_static());
 
     // region:      --- Start Server
@@ -58,6 +62,9 @@ async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
 }
 
 // post request handler, returns the body
+// String is a body extractor, we can only
+// have one body extractor per route, and
+// it has to be the last argument.
 async fn handler_hello3(body: String) -> impl IntoResponse {
     println!("->> {:<12} - handler_hello3 - {body:?}", "HANDLER");
 
