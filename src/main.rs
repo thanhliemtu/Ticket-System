@@ -4,6 +4,7 @@ use std::net::SocketAddr;
 
 use axum::{Router, response::{Html, IntoResponse, Response}, routing::{get, post, get_service}, extract::{Query, Path}, middleware};
 use serde::Deserialize;
+use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
 
 mod error;
@@ -17,6 +18,7 @@ async fn main() {
         .merge(routes_hello())
         .merge(web::routes_login::routes())
         .layer(middleware::map_response(main_response_mapper))
+        .layer(CookieManagerLayer::new())
         .fallback_service(routes_static());
 
     // region:      --- Start Server
