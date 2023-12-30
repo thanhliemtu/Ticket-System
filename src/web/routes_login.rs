@@ -1,8 +1,9 @@
 use axum::{Json, routing::post, Router};
 use serde::Deserialize;
 use serde_json::{Value, json};
+use tower_cookies::{Cookies, Cookie};
 
-use crate::{Error, Result};
+use crate::{Error, Result, web};
 
 #[derive(Debug, Deserialize)]
 struct LoginPayload {
@@ -21,7 +22,7 @@ pub fn routes() -> Router {
 // We can use the Result because our custom Error
 // implements IntoResponse.
 // Remember the return type for a handler is impl IntoResponse
-async fn api_login(payload: Json<LoginPayload>) -> Result<Json<Value>> {
+async fn api_login(cookies: Cookies, payload: Json<LoginPayload>) -> Result<Json<Value>> {
     println!("->> {:<12} - api_login", "HANDLER");
 
     // TODO: Implement real db/auth logic
@@ -29,7 +30,8 @@ async fn api_login(payload: Json<LoginPayload>) -> Result<Json<Value>> {
         return Err(Error::LoginFail);
     }
     
-    // TODO: Set cookies
+    // FIXME: Implement real auth-token generation/signature.
+    cookies.add(Cookie::new(web::AUTH_TOKEN, "user-1.exp.sign"));
 
     // Create the success body
     let body = Json(json!({

@@ -31,10 +31,12 @@ async fn quick_dev() -> Result<()> {
     // );
     // req_login.await?.print().await?;
 
-    // Testing static routing (uncomment the line below to test)
+    // Testing static routing 
+    // (uncomment the line below to test)
     // hc.do_get("/commands.txt").await?.print().await?;
 
     // Testing POST to /api/login route
+    // This will give us a cookie
     let req_login = hc.do_post(
         "/api/login",
         json!({
@@ -43,6 +45,11 @@ async fn quick_dev() -> Result<()> {
         })
     );
     req_login.await?.print().await?;
+
+    // Verify that the cookie has been set
+    // after logging in
+    // (uncomment the line below to verify)
+    hc.do_get("/hello2/Hansamu").await?.print().await?;
 
     Ok(())
 }
